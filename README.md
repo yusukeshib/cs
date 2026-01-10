@@ -6,6 +6,7 @@ Run Claude Code with `--dangerously-skip-permissions` safely in ephemeral Docker
 
 - **Ephemeral containers** - Auto-destroyed after each session (`--rm`)
 - **Full interactive TUI** - Arrow keys, Ctrl+C, multiline input all work
+- **Shared authentication** - Uses your host's `~/.claude` credentials (no extra setup)
 - **Persistent history** - Conversation history saved via `~/.claude` mount
 - **Sandboxed execution** - Only your project directory is accessible
 - **Simple invocation** - Just `cs` from any project directory
@@ -31,15 +32,7 @@ cd ~/.claude-sandbox
 docker build -t claude-sandbox:latest .
 ```
 
-### 2. Set your API key
-
-Add to `~/.zshrc` or `~/.bashrc`:
-
-```bash
-export ANTHROPIC_API_KEY="your-api-key-here"
-```
-
-### 3. Install to ~/.local/bin
+### 2. Install to ~/.local/bin
 
 ```bash
 mkdir -p ~/.local/bin
@@ -47,7 +40,7 @@ ln -sf ~/.claude-sandbox/claude-sandbox.sh ~/.local/bin/claude-sandbox
 ln -sf ~/.claude-sandbox/claude-sandbox.sh ~/.local/bin/cs
 ```
 
-### 4. Ensure ~/.local/bin is in PATH
+### 3. Ensure ~/.local/bin is in PATH
 
 Add to `~/.zshrc` or `~/.bashrc` if not already present:
 
@@ -55,7 +48,7 @@ Add to `~/.zshrc` or `~/.bashrc` if not already present:
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
-### 5. Reload shell
+### 4. Reload shell
 
 ```bash
 source ~/.zshrc  # or ~/.bashrc
@@ -84,7 +77,7 @@ cs --allowedTools "Read,Edit,Grep,Glob"
 | File system | Only project dir + `~/.claude` mounted |
 | Host system | Fully isolated from container |
 | Container | Destroyed after each exit |
-| Credentials | API key via env var, not stored in image |
+| Auth | Shared from host `~/.claude` (no env vars needed) |
 | History | Persists in `~/.claude` on host |
 
 ## Optional: Fresh Sessions

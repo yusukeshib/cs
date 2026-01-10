@@ -11,13 +11,20 @@ if [[ -d "$1" ]]; then
     shift
 fi
 
-# Ensure ~/.claude exists for history persistence
+# Ensure ~/.claude exists for history/auth persistence
 mkdir -p "${HOME}/.claude"
 
-docker run --rm -it \
-    -v "${PROJECT_DIR}:/workspace" \
-    -v "${HOME}/.claude:/root/.claude" \
-    -e ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}" \
-    -w /workspace \
-    claude-sandbox:latest \
-    "$@"
+# Build docker args
+DOCKER_ARGS=(
+    --rm -it
+    -v "${PROJECT_DIR}:/workspace"
+    -v "${HOME}/.claude:/root/.claude"
+    -w /workspace
+)
+
+# Only pass API key if explicitly set (otherwise use mounted ~/.claude auth)
+if [[ -n "${ANTHROPIC_API_KEY}" ]]; then
+    DOCKER_ARGS+=(-e ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}")
+fi
+
+docker run "${DOCKER_ARGS[@]}" claude-sandbox:latest "$@"
