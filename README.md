@@ -1,4 +1,4 @@
-# claude-sandbox
+# cs
 
 Run Claude Code with `--dangerously-skip-permissions` safely in ephemeral Docker containers.
 
@@ -14,30 +14,30 @@ Run Claude Code with `--dangerously-skip-permissions` safely in ephemeral Docker
 ## Quick Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/claude-sandbox/main/install.sh | bash
+curl -fsSL https://raw.github.com/yusukeshib/cs/main/install.sh | bash
 ```
 
 This will:
-1. Clone the repo to `~/.claude-sandbox`
+1. Clone the repo to `~/.cs`
 2. Build the Docker image
-3. Symlink `claude-sandbox` and `cs` to `~/.local/bin`
+3. Symlink `cs` and `cs` to `~/.local/bin`
 
 ## Manual Installation
 
 ### 1. Clone and build
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/claude-sandbox.git ~/.claude-sandbox
-cd ~/.claude-sandbox
-docker build -t claude-sandbox:latest .
+git clone https://github.com/yusukeshib/cs.git ~/.cs
+cd ~/.cs
+docker build -t cs:latest .
 ```
 
 ### 2. Install to ~/.local/bin
 
 ```bash
 mkdir -p ~/.local/bin
-ln -sf ~/.claude-sandbox/claude-sandbox.sh ~/.local/bin/claude-sandbox
-ln -sf ~/.claude-sandbox/claude-sandbox.sh ~/.local/bin/cs
+ln -sf ~/.cs/cs.sh ~/.local/bin/cs
+ln -sf ~/.cs/cs.sh ~/.local/bin/cs
 ```
 
 ### 3. Ensure ~/.local/bin is in PATH
@@ -85,7 +85,7 @@ cs --allowedTools "Read,Edit,Grep,Glob"
 If you want sessions without history persistence:
 
 ```bash
-alias cs-fresh='docker run --rm -it -v "$(pwd):/workspace" -e ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}" -w /workspace claude-sandbox:latest'
+alias cs-fresh='docker run --rm -it -v "$(pwd):/workspace" -e ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}" -w /workspace cs:latest'
 ```
 
 ## Rebuilding
@@ -93,7 +93,7 @@ alias cs-fresh='docker run --rm -it -v "$(pwd):/workspace" -e ANTHROPIC_API_KEY=
 After updating the Dockerfile:
 
 ```bash
-docker build -t claude-sandbox:latest ~/projects/claude-sandbox/
+docker build -t cs:latest ~/projects/cs/
 ```
 
 ## License

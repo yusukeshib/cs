@@ -1,5 +1,5 @@
 #!/bin/bash
-# claude-sandbox - Run Claude Code in ephemeral Docker container with persistent history
+# cs - Run Claude Code in ephemeral Docker container with persistent history
 
 set -e
 
@@ -27,4 +27,4 @@ if [[ -n "${ANTHROPIC_API_KEY}" ]]; then
     DOCKER_ARGS+=(-e ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}")
 fi
 
-docker run "${DOCKER_ARGS[@]}" claude-sandbox:latest "$@"
+docker run "${DOCKER_ARGS[@]}" cs:latest "$@"

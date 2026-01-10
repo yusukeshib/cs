@@ -1,14 +1,14 @@
 #!/bin/bash
-# claude-sandbox installer
-# Usage: curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/claude-sandbox/main/install.sh | bash
+# cs installer
+# Usage: curl -fsSL https://raw.githubusercontent.com/yusukeshib/cs/main/install.sh | bash
 
 set -e
 
-INSTALL_DIR="${CLAUDE_SANDBOX_DIR:-$HOME/.claude-sandbox}"
+INSTALL_DIR="${CLAUDE_SANDBOX_DIR:-$HOME/.cs}"
 BIN_DIR="$HOME/.local/bin"
-REPO_URL="https://github.com/YOUR_USERNAME/claude-sandbox.git"
+REPO_URL="https://github.com/yusukeshib/cs.git"
 
-echo "Installing claude-sandbox..."
+echo "Installing cs..."
 
 # Clone or update repository
 if [ -d "$INSTALL_DIR" ]; then
@@ -23,13 +23,13 @@ fi
 
 # Build Docker image
 echo "Building Docker image..."
-docker build -t claude-sandbox:latest . --quiet
+docker build --quiet -t cs:latest .
 
 # Install to ~/.local/bin
 mkdir -p "$BIN_DIR"
-ln -sf "$INSTALL_DIR/claude-sandbox.sh" "$BIN_DIR/claude-sandbox"
-ln -sf "$INSTALL_DIR/claude-sandbox.sh" "$BIN_DIR/cs"
-echo "Installed to $BIN_DIR/claude-sandbox (and cs)"
+ln -sf "$INSTALL_DIR/cs.sh" "$BIN_DIR/cs"
+ln -sf "$INSTALL_DIR/cs.sh" "$BIN_DIR/cs"
+echo "Installed to $BIN_DIR/cs (and cs)"
 
 # Detect shell config file
 if [ -n "$ZSH_VERSION" ] || [ -f "$HOME/.zshrc" ]; then
