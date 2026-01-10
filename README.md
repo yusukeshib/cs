@@ -10,12 +10,24 @@ Run Claude Code with `--dangerously-skip-permissions` safely in ephemeral Docker
 - **Sandboxed execution** - Only your project directory is accessible
 - **Simple invocation** - Just `cs` from any project directory
 
-## Installation
-
-### 1. Build the Docker image
+## Quick Install
 
 ```bash
-cd ~/projects/claude-sandbox
+curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/claude-sandbox/main/install.sh | bash
+```
+
+This will:
+1. Clone the repo to `~/.claude-sandbox`
+2. Build the Docker image
+3. Symlink `claude-sandbox` and `cs` to `~/.local/bin`
+
+## Manual Installation
+
+### 1. Clone and build
+
+```bash
+git clone https://github.com/YOUR_USERNAME/claude-sandbox.git ~/.claude-sandbox
+cd ~/.claude-sandbox
 docker build -t claude-sandbox:latest .
 ```
 
@@ -27,14 +39,23 @@ Add to `~/.zshrc` or `~/.bashrc`:
 export ANTHROPIC_API_KEY="your-api-key-here"
 ```
 
-### 3. Add to PATH
+### 3. Install to ~/.local/bin
 
 ```bash
-export PATH="$PATH:$HOME/projects/claude-sandbox"
-alias cs='claude-sandbox.sh'
+mkdir -p ~/.local/bin
+ln -sf ~/.claude-sandbox/claude-sandbox.sh ~/.local/bin/claude-sandbox
+ln -sf ~/.claude-sandbox/claude-sandbox.sh ~/.local/bin/cs
 ```
 
-### 4. Reload shell
+### 4. Ensure ~/.local/bin is in PATH
+
+Add to `~/.zshrc` or `~/.bashrc` if not already present:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+### 5. Reload shell
 
 ```bash
 source ~/.zshrc  # or ~/.bashrc

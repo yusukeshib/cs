@@ -5,6 +5,7 @@
 set -e
 
 INSTALL_DIR="${CLAUDE_SANDBOX_DIR:-$HOME/.claude-sandbox}"
+BIN_DIR="$HOME/.local/bin"
 REPO_URL="https://github.com/YOUR_USERNAME/claude-sandbox.git"
 
 echo "Installing claude-sandbox..."
@@ -24,8 +25,11 @@ fi
 echo "Building Docker image..."
 docker build -t claude-sandbox:latest . --quiet
 
-# Make script executable
-chmod +x "$INSTALL_DIR/claude-sandbox.sh"
+# Install to ~/.local/bin
+mkdir -p "$BIN_DIR"
+ln -sf "$INSTALL_DIR/claude-sandbox.sh" "$BIN_DIR/claude-sandbox"
+ln -sf "$INSTALL_DIR/claude-sandbox.sh" "$BIN_DIR/cs"
+echo "Installed to $BIN_DIR/claude-sandbox (and cs)"
 
 # Detect shell config file
 if [ -n "$ZSH_VERSION" ] || [ -f "$HOME/.zshrc" ]; then
@@ -36,15 +40,12 @@ else
     SHELL_RC="$HOME/.profile"
 fi
 
-# Add to PATH if not already present
-if ! grep -q "claude-sandbox" "$SHELL_RC" 2>/dev/null; then
+# Ensure ~/.local/bin is in PATH
+if ! grep -q '\.local/bin' "$SHELL_RC" 2>/dev/null; then
     echo "" >> "$SHELL_RC"
-    echo "# claude-sandbox - ephemeral Docker environment for Claude Code" >> "$SHELL_RC"
-    echo "export PATH=\"\$PATH:$INSTALL_DIR\"" >> "$SHELL_RC"
-    echo "alias cs='claude-sandbox.sh'" >> "$SHELL_RC"
-    echo "Added to $SHELL_RC"
-else
-    echo "Already in $SHELL_RC"
+    echo '# Add ~/.local/bin to PATH' >> "$SHELL_RC"
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$SHELL_RC"
+    echo "Added ~/.local/bin to PATH in $SHELL_RC"
 fi
 
 echo ""
