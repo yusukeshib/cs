@@ -11,7 +11,13 @@ RUN apk add --no-cache \
 # Install Claude Code globally
 RUN npm install -g @anthropic-ai/claude-code
 
+# Create non-root user
+RUN addgroup -S claude && adduser -S claude -G claude
+
 WORKDIR /workspace
+RUN chown claude:claude /workspace
+
+USER claude
 
 ENV TERM=xterm-256color
 ENV LANG=C.UTF-8
