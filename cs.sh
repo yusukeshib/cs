@@ -4,8 +4,7 @@
 set -e
 
 # Pull latest cs source
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-git -C "$SCRIPT_DIR" pull --ff-only
+git -C "${HOME}/.cs" pull --ff-only
 
 # Require project directory as first argument
 if [[ -z "$1" || ! -d "$1" ]]; then
