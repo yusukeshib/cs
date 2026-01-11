@@ -3,13 +3,14 @@
 
 set -e
 
-# Default to current directory if no project path given
-PROJECT_DIR="${1:-$(pwd)}"
-
-# Shift if first arg was a directory path
-if [[ -d "$1" ]]; then
-    shift
+# Require project directory as first argument
+if [[ -z "$1" || ! -d "$1" ]]; then
+    echo "Usage: cs <project_dir> [claude args...]" >&2
+    exit 1
 fi
+
+PROJECT_DIR="$1"
+shift
 
 # Ensure ~/.claude exists for history/auth persistence
 mkdir -p "${HOME}/.claude"
@@ -18,7 +19,7 @@ mkdir -p "${HOME}/.claude"
 DOCKER_ARGS=(
     --rm -it
     -v "${PROJECT_DIR}:/workspace"
-    -v "${HOME}/.claude:/root/.claude"
+    -v "${HOME}/.claude:/home/claude/.claude"
     -w /workspace
 )
 
