@@ -17,4 +17,9 @@ ENV TERM=xterm-256color
 ENV LANG=C.UTF-8
 ENV HOME=/home/node
 
+# Ensure the node user's home directory exists with correct permissions
+RUN mkdir -p /home/node && chown -R node:node /home/node
+
+USER node
+
 ENTRYPOINT ["claude", "--dangerously-skip-permissions"]
