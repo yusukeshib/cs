@@ -21,7 +21,8 @@ ENV LANG=C.UTF-8
 ENV HOME=/home/node
 
 # Fix permissions again in case npm install modified the home directory
-RUN chown -R node:node /home/node
+# chmod 777 allows any user (including --user from docker run) to write here
+RUN chown -R node:node /home/node && chmod 777 /home/node
 
 USER node
 
