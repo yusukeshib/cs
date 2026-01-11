@@ -18,8 +18,9 @@ mkdir -p "${HOME}/.claude"
 # Build docker args
 DOCKER_ARGS=(
     --rm -it
+    --user "$(id -u):$(id -g)"
     -v "${PROJECT_DIR}:/workspace"
-    -v "${HOME}/.claude:/home/claude/.claude"
+    -v "${HOME}/.claude:/home/node/.claude"
     -w /workspace
 )
 
